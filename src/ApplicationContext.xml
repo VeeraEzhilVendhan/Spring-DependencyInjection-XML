@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- setting values from property file -->
+<context:property-placeholder location="classpath:coach.properties"/>
+
+<!-- added to show loggig msgs -->
+ <bean id="myLoggerConfig" class="com.spring.di.base.MyLoggerConfig" init-method="initLogger">
+    	<property name="rootLoggerLevel" value="FINE" />
+    	<property name="printedLoggerLevel" value="FINE"/>
+ </bean>
+
+<!-- Dependency Injection -->
+  <bean id="bestquoteservice" class="com.spring.di.constructor_injection.BestQuoteService">
+  </bean>
+  
+  <bean id="randomquoteservice" class="com.spring.di.practice2.RandomQuoteService">
+  </bean>
+    
+  <bean id="baseballcoach" class="com.spring.di.base.BaseballCoach">
+      <constructor-arg ref="bestquoteservice"/> <!-- Constructor Injection -->
+  </bean>  
+   
+  <bean id="footballcoach" class="com.spring.di.base.FootballCoach">
+       <constructor-arg ref="randomquoteservice"/> <!-- Constructor Injection -->
+  </bean> 
+  
+<!-- Setter Injection -->
+    
+    <bean id="cricketcoach" class="com.spring.di.setter_injection.CricketCoach">
+          <property name="qs" ref="bestquoteservice" />
+    </bean>
+  
+<!-- Value Injection -->
+    
+    <bean id="cricketcoach1" class="com.spring.di.injecting_literalvalues.CricketCoach1">
+          <property name="qs" ref="bestquoteservice" />
+          <property name="name" value="${c.name}" />
+          <property name="email_address" value="${c.email_address}" />
+    </bean>
+
+</beans>
